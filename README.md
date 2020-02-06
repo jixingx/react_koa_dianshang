@@ -1,5 +1,12 @@
 # 电商系统
 
+
+## 后台
+### 框架和技术
+1. react
+2. antd
+3. react-router-dom
+
 ## 数据库
 使用`mysql`数据库
 
