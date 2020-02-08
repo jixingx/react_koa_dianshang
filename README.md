@@ -1,5 +1,18 @@
 # 电商系统
 
+## 中台
+### 使用框架和技术
+使用`nodejs`
+
+1. koa2
+2. koa-bodyparser(解决post请求参数)
+3. koa-router(路由模块)
+4. koa-static(处理静态资源)
+5. koa2-cors(处理跨域)
+6. mysql(链接mysql数据库)
+7. jsonwebtoken(处理token)
+8. koa-jwt(主要提供路有权限控制的功能，它会对需要限制的资源请求进行检查)
+
 
 ## 后台
 ### 框架和技术
