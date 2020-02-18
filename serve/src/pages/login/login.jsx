@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import Myaxios from '../../api/Myaxios.js';
 import { Form, Icon, Input, Button } from 'antd';
 import "./css/login.less"
+
 
 const {Item}=Form
 
@@ -8,11 +10,18 @@ class Login extends Component {
     //获取表单数据
     handleSubmit=(e)=>{
         e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-        if (!err) {
-            console.log('Received values of form: ', values);
-        }
-        });
+        this.props.form.validateFields(async (err, values) => {
+            if (!err) {
+                console.log('Received values of form: ', values);
+                // Myaxios.post("http://localhost:8080/admin/login",values).then((res)=>{
+                //     console.log(res)
+                // },(error)=>{
+                //     console.log(error)
+                // })
+                let result=await Myaxios.post("/login",values)
+                console.log(result)
+            }
+        })
     }
     render() { 
         const { getFieldDecorator } = this.props.form;

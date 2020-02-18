@@ -12,6 +12,7 @@
 6. mysql(链接mysql数据库)
 7. jsonwebtoken(处理token)
 8. koa-jwt(主要提供路有权限控制的功能，它会对需要限制的资源请求进行检查)
+9. md5(对密码进行加密)
 
 
 ## 后台
@@ -19,6 +20,8 @@
 1. react
 2. antd
 3. react-router-dom
+4. axios
+5. nprogress(请求进度条)
 
 ## 数据库
 使用`mysql`数据库

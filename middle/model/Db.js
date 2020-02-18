@@ -8,8 +8,8 @@ async function Db(sql){
             host:'localhost',//域名
             port:'3306',//端口
             user:'root',//数据库登录用户名
-            password:'123',//数据库登录密码
-            database:'react_blog'
+            password:'root',//数据库登录密码
+            database:'xretailers'
         })
 
         //链接

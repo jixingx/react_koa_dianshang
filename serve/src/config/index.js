@@ -1,0 +1,1 @@
+export const BASEURL="http://localhost:8080/admin"//请求的基本路径
