@@ -23,6 +23,26 @@
 4. axios
 5. nprogress(请求进度条)
 
+### 接口
+> 所有接口前置`http://localhost:8080/admin`
+
+登录接口
+```
+  所需参数：username,password
+  返回参数：
+    1. 成功返回：
+        {
+            status:0,
+            data:qureyDate[0],
+            token:"Bearer "+token
+        }
+    2. 失败返回：
+        {
+            status:1,
+            msg:'用户名或密码错误'
+        }
+```
+
 ## 数据库
 使用`mysql`数据库
 

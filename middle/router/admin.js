@@ -38,7 +38,7 @@ router.post('/login',async (ctx)=>{
         }else{
             ctx.body={
                 status:1,
-                msg:'登录失败'
+                msg:'用户名或密码错误'
             }
         }
     } catch (error) {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Myaxios from '../../api/Myaxios.js';
-import { Form, Icon, Input, Button } from 'antd';
+import {apiLogin} from '../../api';
+import { Form, Icon, Input, Button, message } from 'antd';
 import "./css/login.less"
 
 
@@ -18,8 +18,13 @@ class Login extends Component {
                 // },(error)=>{
                 //     console.log(error)
                 // })
-                let result=await Myaxios.post("/login",values)
-                console.log(result)
+                let result=await apiLogin(values)
+                if(result.status===0){
+                    message.success('登录成功')
+                    this.props.history.replace('/admin')
+                }else{
+                    message.warning(result.msg)
+                }
             }
         })
     }
