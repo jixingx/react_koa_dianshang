@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import {apiLogin} from '../../api';
 import { Form, Icon, Input, Button, message } from 'antd';
 import "./css/login.less"
+import {save_userinfo} from '../../redux/actions/login_creators.js'
+import {connect} from 'react-redux'
+import {Redirect} from 'react-router-dom'
 
 
 const {Item}=Form
@@ -22,6 +25,7 @@ class Login extends Component {
                 if(result.status===0){
                     message.success('登录成功')
                     this.props.history.replace('/admin')
+                    this.props.save_userinfo(result)
                 }else{
                     message.warning(result.msg)
                 }
@@ -29,6 +33,11 @@ class Login extends Component {
         })
     }
     render() { 
+        if(this.props.userInfo.isLogin){
+            //进入此判断意味着用户已经登录，强制跳转admin
+            // this.props.history.replace('/admin')
+            return <Redirect to="/admin" />
+        }
         const { getFieldDecorator } = this.props.form;
         return ( 
             <div className="login">
@@ -85,4 +94,7 @@ class Login extends Component {
 //加工了我们编写的Login组件，生成一个新的WrappedLogin组件
 const WrappedLogin = Form.create()(Login);
 
-export default WrappedLogin;
+export default connect(
+    (state)=>({userInfo:state.userInfo}),
+    {save_userinfo}
+)(WrappedLogin);

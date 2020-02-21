@@ -1,0 +1,1 @@
+export const SVAE_USERINFO='save_userinfo'

@@ -22,6 +22,10 @@
 3. react-router-dom
 4. axios
 5. nprogress(请求进度条)
+6. redux
+7. react-redux
+8. redux-thunk
+9. redux-devtools-extension
 
 ### 接口
 > 所有接口前置`http://localhost:8080/admin`
