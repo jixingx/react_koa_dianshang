@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
+import Header from './header/Header'
+
+import { Layout } from 'antd';
+import "./css/admin.less"
+const { Footer, Sider, Content } = Layout;
+ 
+
+
 
 class Admin extends Component {
     render() {
@@ -9,12 +17,15 @@ class Admin extends Component {
             // this.props.history.replace('/admin')
             return <Redirect to="/login" />
         }
-        console.log(this.props.userInfo)
         return (
-            
-            <div>
-                Admin{this.props.userInfo.user.username}
-            </div>
+            <Layout className="content">
+                <Sider>Sider</Sider>
+                <Layout>
+                    <Header />
+                    <Content>Content</Content>
+                    <Footer>Footer</Footer>
+                </Layout>
+            </Layout>
         );
     }
 }

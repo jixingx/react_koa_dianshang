@@ -14,23 +14,10 @@
 8. koa-jwt(主要提供路有权限控制的功能，它会对需要限制的资源请求进行检查)
 9. md5(对密码进行加密)
 
-
-## 后台
-### 框架和技术
-1. react
-2. antd
-3. react-router-dom
-4. axios
-5. nprogress(请求进度条)
-6. redux
-7. react-redux
-8. redux-thunk
-9. redux-devtools-extension
-
 ### 接口
 > 所有接口前置`http://localhost:8080/admin`
 
-登录接口
+登录接口:/login
 ```
   所需参数：username,password
   返回参数：
@@ -46,6 +33,21 @@
             msg:'用户名或密码错误'
         }
 ```
+
+## 后台
+### 框架和技术
+1. react
+2. antd
+3. react-router-dom
+4. axios
+5. nprogress(请求进度条)
+6. redux
+7. react-redux
+8. redux-thunk
+9. redux-devtools-extension
+10. screenfull(全屏切换插件)
+
+
 
 ## 数据库
 使用`mysql`数据库
