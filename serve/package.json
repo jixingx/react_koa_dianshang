@@ -9,6 +9,7 @@
     "antd": "^3.26.8",
     "axios": "^0.19.2",
     "customize-cra": "^0.9.1",
+    "dayjs": "^1.8.20",
     "nprogress": "^0.2.0",
     "react": "^16.12.0",
     "react-app-rewired": "^2.1.5",

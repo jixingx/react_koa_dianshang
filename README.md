@@ -46,6 +46,7 @@
 8. redux-thunk
 9. redux-devtools-extension
 10. screenfull(全屏切换插件)
+11. dayjs (时间插件)
 
 
 

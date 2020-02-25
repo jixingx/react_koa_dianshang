@@ -1,4 +1,4 @@
-import {SVAE_USERINFO} from '../action_types'
+import {SVAE_USERINFO,LOGINOUT} from '../action_types'
 
 let _user=JSON.parse(localStorage.getItem('user'))
 let _token=localStorage.getItem('token')
@@ -17,7 +17,9 @@ export default (state=defaultState,action)=>{
         case SVAE_USERINFO:
             newState={user:date.data,token:date.token,isLogin:true}
             return newState;
-    
+        case LOGINOUT:
+            newState={user:{},token:'',isLogin:false}
+            return newState;
         default:
             return state
     }

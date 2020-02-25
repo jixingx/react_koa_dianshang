@@ -1,4 +1,4 @@
-import {SVAE_USERINFO} from '../action_types'
+import {SVAE_USERINFO,LOGINOUT} from '../action_types'
 
 export const save_userinfo=(value)=>{
     // console.log(value)
@@ -6,3 +6,5 @@ export const save_userinfo=(value)=>{
     localStorage.setItem('token',value.token)
     return {type:SVAE_USERINFO,date:value}
 }
+
+export const loginout=(value)=>({type:LOGINOUT,data:''})
