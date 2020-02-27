@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import Header from './header/Header'
+import {apiMenu} from '../../api/index'
 
 import { Layout } from 'antd';
 import "./css/admin.less"
@@ -11,6 +12,10 @@ const { Footer, Sider, Content } = Layout;
 
 
 class Admin extends Component {
+    handlerClick=async ()=>{
+       let menu=await apiMenu();
+       console.log(menu)
+    }
     render() {
         if(!this.props.userInfo.isLogin){
             //进入此判断意味着用户已经登录，强制跳转admin
@@ -19,7 +24,9 @@ class Admin extends Component {
         }
         return (
             <Layout className="content">
-                <Sider>Sider</Sider>
+                <Sider>
+                    <button onClick={this.handlerClick}>获取菜单</button>
+                </Sider>
                 <Layout>
                     <Header />
                     <Content>Content</Content>

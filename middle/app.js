@@ -14,12 +14,26 @@ const path=require('path');
 const static=require('koa-static')
 const staticPath='./static'
 app.use(static(path.join(__dirname,staticPath)));
+// 中间件对token进行验证
+app.use(async (ctx, next) => {
+    return next().catch((err) => {
+        if (err.status === 401) {
+            ctx.status = 401;
+            ctx.body = {
+                code: 401,
+                msg: err.message
+            }
+        } else {
+            throw err;
+        }
+    })
+});
 
 //koa-jwt 主要提供路有权限控制的功能，它会对需要限制的资源请求进行检查
 const jwtKoa = require('koa-jwt')
 app.use(jwtKoa({secret:"secret"}).unless({//第一个参数密匙，第二个参数那些URL不需要验证
     path: [
-        /^\/admin\/login/,
+        /^\/admin\/login/
         // /^\/default\/getTypeInfo/,
         // /^\/default\/getArticleList/,
         // /^\/default\/getArticleById/

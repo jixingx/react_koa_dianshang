@@ -29,7 +29,7 @@ router.post('/login',async (ctx)=>{
                 * 
                 */
             //jwt.sign("规则","加密名字","过期时间","箭头函数")
-            let token=jwt.sign(rule,"secret",{expiresIn:'1h'})
+            let token=jwt.sign(rule,"secret",{expiresIn:'15s'})
             ctx.body={
                 status:0,
                 data:qureyDate[0],
@@ -48,6 +48,20 @@ router.post('/login',async (ctx)=>{
         }
     }
     
+})
+
+//获取接口
+router.get('/menu',async (ctx)=>{
+    //console.log(ctx)
+    try {
+        ctx.body="1"
+    } catch (error) {
+       // console.log(error)
+        ctx.body={
+            code:500,
+            msg:error
+        }
+    }
 })
 
 module.exports=router
