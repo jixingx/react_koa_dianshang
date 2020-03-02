@@ -13,7 +13,7 @@ export default [
             {
                 title:'分类管理',
                 key:'category',
-                icon:'category',
+                icon:'unordered-list',
                 path:'/admin/prod_about/category'
             },
             {

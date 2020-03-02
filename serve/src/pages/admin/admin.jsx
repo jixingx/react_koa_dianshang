@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
-import {Redirect} from 'react-router-dom'
+import {Redirect,Switch,Route} from 'react-router-dom'
 import Header from './header/Header'
 import LeftNav from './left_nav/left_nav'
+import Home from "../../components/Home/home"
+import Category from "../../components/Category/category"
+import Product from "../../components/Product/product"
+import User from "../../components/User/user"
+import Role from "../../components/Role/role"
+import Bar from "../../components/Bar/bar"
+import Line from "../../components/Line/line"
+
+
 import { Layout } from 'antd';
 import "./css/admin.less"
 const { Footer, Sider, Content } = Layout;
@@ -25,8 +34,18 @@ class Admin extends Component {
                 </Sider>
                 <Layout>
                     <Header />
-                    <Content>Content</Content>
-                    <Footer>Footer</Footer>
+                    <Content className="pagebox">
+                        <Switch>
+                            <Route path="/admin/home" component={Home}/>
+                            <Route path="/admin/prod_about/category" component={Category}/>
+                            <Route path="/admin/prod_about/product" component={Product}/>
+                            <Route path="/admin/user" component={User}/>
+                            <Route path="/admin/role" component={Role}/>
+                            <Route path="/admin/charts/bar" component={Bar}/>
+                            <Route path="/admin/charts/line" component={Line}/>
+                        </Switch>
+                    </Content>
+                    <Footer className="footer">推荐使用谷歌浏览器，获取最佳用户体验</Footer>
                 </Layout>
             </Layout>
         );
