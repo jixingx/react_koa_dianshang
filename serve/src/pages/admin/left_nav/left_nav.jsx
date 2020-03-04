@@ -1,17 +1,19 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link,withRouter } from 'react-router-dom'
+import {connect} from 'react-redux'
+import {save_title} from '../../../redux/actions/title_creators'
 import MenuArrays from '../../../config/menu-config'
 import { Menu, Icon } from 'antd';
 import "./css/left_nav.less"
 
 const { SubMenu,Item } = Menu;
 
-export default class LeftNav extends Component {
+class LeftNav extends Component {
     HanldeMenu=(MenuArrays)=>{
         return MenuArrays.map((item)=>{
             if(!item.children){
                 return (
-                    <Item key={item.key}>
+                    <Item key={item.key} onClick={()=>{this.props.save_title(item.title)}}>
                         <Link to={item.path}>
                             <Icon type={item.icon} />
                             <span>{item.title}</span>
@@ -36,40 +38,22 @@ export default class LeftNav extends Component {
         })
     }
     render() {
+        const {pathname}=this.props.history.location
+        const openKeys=this.props.history.location.pathname.split('/').splice(2)
+        
         return (
             <div className="left-nav">
                 <h2 className="left-nav-title">商城后台管理</h2>
                 <Menu
-                    defaultSelectedKeys={['home']}
-                    // defaultOpenKeys={['sub1']}
+                    selectedKeys={[pathname.split('/').reverse()[0]]}
+                    defaultOpenKeys={openKeys}
                     mode="inline"
                     theme="dark"
                 >
                     {this.HanldeMenu(MenuArrays)}
-                    {/* <Item key="1">
-                        <Link to="/admin/home">
-                            <Icon type="pie-chart" />
-                            <span>Option 1</span>
-                        </Link>
-                    </Item>
-                    <Item key="2">
-                        <Icon type="desktop" />
-                        <span>Option 2</span>
-                    </Item>
-                    <SubMenu
-                        key="sub1"
-                        title={
-                        <span>
-                            <Icon type="mail" />
-                            <span>Navigation One</span>
-                        </span>
-                        }
-                    >
-                        <Menu.Item key="5">Option 5</Menu.Item>
-                        <Menu.Item key="6">Option 6</Menu.Item>
-                    </SubMenu> */}
                 </Menu>
             </div>
         )
     }
 }
+export default connect(null,{save_title})(withRouter(LeftNav))

@@ -43,6 +43,7 @@ class Admin extends Component {
                             <Route path="/admin/role" component={Role}/>
                             <Route path="/admin/charts/bar" component={Bar}/>
                             <Route path="/admin/charts/line" component={Line}/>
+                            <Redirect to="/admin/home" />
                         </Switch>
                     </Content>
                     <Footer className="footer">推荐使用谷歌浏览器，获取最佳用户体验</Footer>

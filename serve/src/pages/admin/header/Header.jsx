@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import './css/header.less'
+import { withRouter } from 'react-router-dom'
+import MenuArrays from '../../../config/menu-config'
 import {Button,Icon,Modal} from 'antd'
 import screenfull from 'screenfull';
 import {connect} from 'react-redux';
 import {loginout} from '../../../redux/actions/login_creators'
+import {save_title} from '../../../redux/actions/title_creators.js'
 import dayjs from 'dayjs'
 import {apiWeather} from "../../../api/index"
 
@@ -57,9 +60,32 @@ class Header extends Component {
             },
         });
     }
+    SetTiTle=()=>{
+        let pathname=this.props.history.location.pathname.split('/').reverse()[0]
+        let title='';
+        MenuArrays.forEach((item)=>{
+            if(item.children instanceof Array){
+                let result=item.children.find((menuitem)=>{
+                    return menuitem.key===pathname
+                })
+                if(result){
+                    title=result.title
+                }
+                
+            }else{
+                if(item.key===pathname){
+                    title=item.title
+                }
+            }
+            
+        })
+        this.props.save_title(title)
+        return title
+    }
     render() {
         const {username}=this.props.userInfo.user
         const {city,wea,tem2,tem1}=this.state.weather
+        
         return (
             <div className="header">
                 <div className="header-top">
@@ -71,7 +97,7 @@ class Header extends Component {
                 </div>
                 <div className="header-bottom">
                     <div className="header-bottom-left">
-                        首页
+                        {this.props.title || this.SetTiTle()}
                     </div>
                     <div className="header-bottom-right">
                         <span>{this.state.date}</span>
@@ -85,6 +111,6 @@ class Header extends Component {
 }
 
 export default connect(
-    (state)=>({userInfo:state.userInfo}),
-    {loginout}
-)(Header)
+    (state)=>({userInfo:state.userInfo,title:state.title}),
+    {loginout,save_title}
+)(withRouter(Header))
