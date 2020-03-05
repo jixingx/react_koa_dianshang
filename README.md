@@ -19,6 +19,7 @@
 
 登录接口:/login
 ```
+  请求方式:post
   所需参数：username,password
   返回参数：
     1. 成功返回：
@@ -33,6 +34,24 @@
             msg:'用户名或密码错误'
         }
 ```
+
+分类列表接口:/category/list
+```
+  请求分时:get
+  所需参数：username,password
+  返回参数：
+    1. 成功返回：
+        ctx.body={
+            status:0,
+            data:qureyDate
+        }
+    2. 无数据返回：
+        ctx.body={
+            status:1,
+            msg:'暂无数据'
+        }
+```
+
 
 ## 后台
 ### 框架和技术

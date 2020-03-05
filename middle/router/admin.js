@@ -29,7 +29,7 @@ router.post('/login',async (ctx)=>{
                 * 
                 */
             //jwt.sign("规则","加密名字","过期时间","箭头函数")
-            let token=jwt.sign(rule,"secret",{expiresIn:'15s'})
+            let token=jwt.sign(rule,"secret",{expiresIn:'7d'})
             ctx.body={
                 status:0,
                 data:qureyDate[0],
@@ -50,13 +50,23 @@ router.post('/login',async (ctx)=>{
     
 })
 
-//获取接口
-router.get('/menu',async (ctx)=>{
-    //console.log(ctx)
+//获取分类列表接口
+router.get("/category/list",async (ctx)=>{
     try {
-        ctx.body="1"
+        let sql=`SELECT * FROM categorys`;
+        let qureyDate=await Dd(sql)
+        if(qureyDate.length>0){
+            ctx.body={
+                status:0,
+                data:qureyDate
+            }
+        }else{
+            ctx.body={
+                status:1,
+                msg:'暂无数据'
+            }
+        }
     } catch (error) {
-       // console.log(error)
         ctx.body={
             code:500,
             msg:error
