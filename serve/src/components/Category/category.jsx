@@ -1,28 +1,44 @@
 import React, { Component } from 'react'
-import { Card,Button,Icon,Table,Modal,Form,Input } from 'antd';
-import {apiCategory} from '../../api/index'
+import { Card,Button,Icon,Table,Modal,Form,Input,message } from 'antd';
+import {apiCategory,apiCategoryAdd,apiCategoryUpdate} from '../../api/index'
 
 class Category extends Component {
     state = { 
       visible: false,
       dataSource:[]
     };
-    //点解增加按钮
-    showModal = () => {
-      this.setState({
-        visible: true,
-      });
-    };
     //点击模态框确认按钮
     handleOk = e => {
-      console.log(e);
-      this.setState({
-        visible: false,
-      });
+      e.preventDefault();
+      this.props.form.validateFields(async (err, values) => {
+        if (!err) {
+            // console.log('Received values of form: ', values);
+            
+            let result=''
+            if(this.add){
+              console.log(values)
+              result=await apiCategoryAdd(values)
+            }else{
+              values.id=this.id
+              result=await apiCategoryUpdate(values)
+            }
+            if(result.status===0){
+                this.setState({
+                  visible: false,
+                });
+                this.props.form.resetFields()
+                this.getlist()
+                message.success(this.add?'新增成功':'更新成功',1)
+                
+            }else{
+                message.warning(result.msg,1)
+            }
+        }
+      })
     };
     //点击模态框取消按钮
     handleCancel = e => {
-      console.log(e);
+      this.props.form.resetFields()
       this.setState({
         visible: false,
       });
@@ -41,7 +57,7 @@ class Category extends Component {
       let result=await apiCategory()
       if(!result.state){
         this.setState({
-          dataSource:result.data
+          dataSource:result.data.reverse()
         })
       }else{
         this.setState({
@@ -65,18 +81,48 @@ class Category extends Component {
           },
           {
             title: '操作',
-            dataIndex: 'operation',
+            // dataIndex: 'operation',
             key: 'operation',
             align:"center",
             width:"25%",
-            render:()=>{
-                return <Button type="link">修改分类</Button>
+            render:(item)=>{
+                
+                return (<Button type="link" 
+                  onClick={
+                    ()=>{
+                      this.id=item.id
+                      this.name=item.name
+                      this.add=false
+                      this.setState({
+                        visible: true
+                      })
+                    }
+                  }
+                  >
+                    修改分类
+                  </Button>)
             }
           },
         ];
         return (
           <div>
-             <Card extra={<Button type="primary" onClick={this.showModal}><Icon type="plus-circle" />增加</Button>}>
+             <Card extra={
+              <Button 
+                type="primary" 
+                onClick={
+                  ()=>{
+                    this.id=''
+                    this.name=''
+                    this.add=true
+                    this.setState({
+                      visible: true
+                    })
+                  }
+                }
+              >
+                <Icon type="plus-circle" />增加
+              </Button>
+            }>
                 <Table 
                     dataSource={dataSource} 
                     columns={columns} 
@@ -86,7 +132,7 @@ class Category extends Component {
                 />
             </Card>
             <Modal
-              title="分类名称新增"
+              title={this.add?'分类新增':'分类修改'}
               visible={this.state.visible}
               onOk={this.handleOk}
               onCancel={this.handleCancel}
@@ -95,7 +141,8 @@ class Category extends Component {
             >
               <Form onSubmit={this.handleSubmit} className="login-form">
                 <Form.Item>
-                  {getFieldDecorator('username', {
+                  {getFieldDecorator('categoryName', {
+                    initialValue:this.name,
                     rules: [{ required: true, message: '分类名称不能为空' }],
                   })(
                     <Input

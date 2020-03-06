@@ -15,4 +15,6 @@ export const apiWeather=()=>{
 }
 
 export const apiMenu = () => Myaxios.get('/menu')//菜单接口
-export const apiCategory=()=> Myaxios.get('/category/list')//分类接口
+export const apiCategory=()=> Myaxios.get('/category/list')//分类列表接口
+export const apiCategoryAdd=(categoryName)=>Myaxios.post('/category/add',categoryName)//分类新增接口
+export const apiCategoryUpdate=(categoryValue)=>Myaxios.post('/category/update',categoryValue)//分类更新接口

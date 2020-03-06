@@ -52,6 +52,54 @@
         }
 ```
 
+分类列表新增接口:/category/add
+```
+  请求分时:post
+  所需参数：categoryName
+  返回参数：
+    1. 成功返回：
+        ctx.body={
+            status:0,
+            data:{
+                id:addDate.insertId,
+                name:categoryName
+            }
+        }
+    2. 失败返回：
+        ctx.body={
+            status:1,
+            msg:'已有此分类'
+        }
+        或
+        ctx.body={
+            status:1,
+            msg:'新增分类失败'
+        }
+```
+分类列表更新接口:/category/update
+```
+  请求分时:post
+  所需参数：id,categoryName
+  返回参数：
+    1. 成功返回：
+        ctx.body={
+            status:0,
+            data:{
+                id:id,
+                name:categoryName
+            }
+        }
+    2. 失败返回：
+        ctx.body={
+            status:1,
+            msg:'已有此分类'
+        }
+        或
+        ctx.body={
+            status:1,
+            msg:'更新分类失败'
+        }
+```
 
 ## 后台
 ### 框架和技术

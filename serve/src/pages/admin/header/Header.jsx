@@ -32,7 +32,7 @@ class Header extends Component {
         });
         this.time=setInterval(()=>{
             this.setState({
-                date:dayjs().format('YYYY年MM月DD HH:mm:ss')
+                date:dayjs().format('YYYY年MM月DD日 HH:mm:ss')
             })
         },1000)
         //请求天气

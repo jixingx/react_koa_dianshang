@@ -73,5 +73,77 @@ router.get("/category/list",async (ctx)=>{
         }
     }
 })
-
+//分类商品新增
+router.post('/category/add',async (ctx)=>{
+    try {
+        let {categoryName}=ctx.request.body
+        let sql=`SELECT * FROM categorys WHERE name='${categoryName}'`;
+        let qureyDate=await Dd(sql)
+        if(qureyDate.length>0){
+            ctx.body={
+                status:1,
+                msg:'已有此分类'
+            }
+        }else{
+            sql=`INSERT INTO categorys VALUES(null,'${categoryName}')`;
+            let addDate=await Dd(sql)
+            if(addDate.affectedRows>0){
+                ctx.body={
+                    status:0,
+                    data:{
+                        id:addDate.insertId,
+                        name:categoryName
+                    }
+                }
+            }else{
+                ctx.body={
+                    status:1,
+                    msg:'新增分类失败'
+                }
+            }
+        }
+    } catch (error) {
+        ctx.body={
+            code:500,
+            msg:error
+        }
+    }
+})
+//分类商品更新
+router.post('/category/update',async (ctx)=>{
+    try {
+        let {id,categoryName}=ctx.request.body
+        let sql=`SELECT * FROM categorys WHERE name='${categoryName}'`;
+        let qureyDate=await Dd(sql)
+        if(qureyDate.length>0){
+            ctx.body={
+                status:1,
+                msg:'已有此分类'
+            }
+        }else{
+            let sql=`UPDATE categorys SET name='${categoryName}' WHERE id=${id}`;
+            let updateDate=await Dd(sql)
+            if(updateDate.affectedRows>0){
+                ctx.body={
+                    status:0,
+                    data:{
+                        id:id,
+                        name:categoryName
+                    }
+                }
+            }else{
+                ctx.body={
+                    status:1,
+                    msg:'更新分类失败'
+                }
+            }
+        }
+        
+    } catch (error) {
+        ctx.body={
+            code:500,
+            msg:error
+        }
+    }
+})
 module.exports=router

@@ -15,7 +15,7 @@ class Login extends Component {
         e.preventDefault();
         this.props.form.validateFields(async (err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
+                //console.log('Received values of form: ', values);
                 // Myaxios.post("http://localhost:8080/admin/login",values).then((res)=>{
                 //     console.log(res)
                 // },(error)=>{
