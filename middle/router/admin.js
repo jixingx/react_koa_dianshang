@@ -63,7 +63,7 @@ router.get("/category/list",async (ctx)=>{
         }else{
             ctx.body={
                 status:1,
-                msg:'暂无数据'
+                data:[]
             }
         }
     } catch (error) {
@@ -139,6 +139,49 @@ router.post('/category/update',async (ctx)=>{
             }
         }
         
+    } catch (error) {
+        ctx.body={
+            code:500,
+            msg:error
+        }
+    }
+})
+//获取商品列表
+router.get("/product/list",async (ctx)=>{
+    try {
+        let {pageNum,pageSize}=ctx.request.query
+        let sql=`SELECT count(*) FROM products`;//获取总条数
+        let total=await Dd(sql)
+        total=total[0]['count(*)'];//获取总条数
+        //获取有多少页
+        let pages=Math.ceil(total/pageSize)
+        //分页开始的位置
+        let startTol=(pageNum-1)*pageSize
+        sql=`SELECT * FROM products limit ${startTol},${pageSize}`
+        let qureyDate=await Dd(sql)
+        if(qureyDate.length>0){
+            ctx.body={
+                status:0,
+                data:{
+                    list:qureyDate,
+                    pageNum:Number(pageNum),
+                    pageSize:Number(pageSize),
+                    pages:pages,
+                    total:total
+                }
+            }
+        }else{
+            ctx.body={
+                status:1,
+                data:{
+                    list:[],
+                    pageNum:Number(pageNum),
+                    pageSize:Number(pageSize),
+                    pages:0,
+                    total:0
+                }
+            }
+        }
     } catch (error) {
         ctx.body={
             code:500,
