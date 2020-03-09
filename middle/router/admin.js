@@ -189,4 +189,60 @@ router.get("/product/list",async (ctx)=>{
         }
     }
 })
+//获取商品搜索列表
+router.get("/product/search",async (ctx)=>{
+    try {
+        let {productName,productDesc,pageNum,pageSize}=ctx.request.query
+        let sql;
+        if(productName){
+            sql=`SELECT count(*) FROM products WHERE name LIKE '%${productName}%'`;//获取总条数
+        }else if(productDesc){
+            sql=`SELECT count(*) FROM products WHERE desc_ribe LIKE '%${productDesc}%'`;//获取总条数
+        }else{
+            sql=`SELECT count(*) FROM products`;//获取总条数
+        }
+        let total=await Dd(sql)
+        total=total[0]['count(*)'];//获取总条数
+        //获取有多少页
+        let pages=Math.ceil(total/pageSize)
+        //分页开始的位置
+        let startTol=(pageNum-1)*pageSize
+        if(productName){
+            sql=`SELECT * FROM products WHERE name LIKE '%${productName}%' LIMIT ${startTol},${pageSize}`
+        }else if(productDesc){
+            sql=`SELECT * FROM products WHERE desc_ribe LIKE '%${productDesc}%' LIMIT ${startTol},${pageSize}`
+        }else{
+            sql=`SELECT * FROM products limit ${startTol},${pageSize}`
+        }
+        let qureyDate=await Dd(sql)
+        if(qureyDate.length>0){
+            ctx.body={
+                status:0,
+                data:{
+                    list:qureyDate,
+                    pageNum:Number(pageNum),
+                    pageSize:Number(pageSize),
+                    pages:pages,
+                    total:total
+                }
+            }
+        }else{
+            ctx.body={
+                status:1,
+                data:{
+                    list:[],
+                    pageNum:Number(pageNum),
+                    pageSize:Number(pageSize),
+                    pages:0,
+                    total:0
+                }
+            }
+        }
+    } catch (error) {
+        ctx.body={
+            code:500,
+            msg:error
+        }
+    }
+})
 module.exports=router

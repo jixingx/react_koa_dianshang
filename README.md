@@ -130,6 +130,35 @@
         }
 ```
 
+商品搜索接口:/product/search
+```
+  请求分时:get
+  所需参数：productName,productDesc,pageNum(第几页),pageSize(每页条数)
+  返回参数：
+    1. 成功返回：
+        ctx.body={
+            status:0,
+            data:{
+                list:qureyDate,
+                pageNum:Number(pageNum),
+                pageSize:Number(pageSize),
+                pages:pages,
+                total:total
+            }
+        }
+    2. 无数据返回：
+        ctx.body={
+            status:1,
+            data:{
+                list:[],
+                pageNum:Number(pageNum),
+                pageSize:Number(pageSize),
+                pages:0,
+                total:0
+            }
+        }
+```
+
 ## 后台
 ### 框架和技术
 1. react

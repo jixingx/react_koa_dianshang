@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Card,Button,Icon,Select,Input,Table,message } from 'antd';
-import {apiProductList} from '../../api/index'
+import {apiProductList,apiProductSearch} from '../../api/index'
+import {PAGE_SIZE} from '../../config/index'
 
 const { Option } = Select;
 
@@ -8,10 +9,18 @@ export default class Product extends Component {
     state={
         productList:[],
         pages:'',
-        total:''
+        total:'',
+        typeSerach:'productName',
+        keyWords:'',
+        current:''
     }
     getProductList=async (pageNum,pageSize)=>{
-        let result=await apiProductList(pageNum,pageSize)
+        let result
+        if(this.Serach){
+            result=await apiProductSearch([this.state.typeSerach],this.state.keyWords,pageNum,pageSize)
+        }else{
+            result=await apiProductList(pageNum,pageSize)
+        }
         const {status,data,msg}=result
         if(status===0){
             this.setState({
@@ -24,8 +33,13 @@ export default class Product extends Component {
         }
     }
     componentDidMount(){
-        this.getProductList(1,5)
+        this.getProductList(1,PAGE_SIZE)
     }
+    //搜索
+    // getSearch=async (pageNum,pageSize)=>{
+    //     let result=await apiProductSearch([this.state.typeSerach],this.state.keyWords,pageNum,pageSize)
+    //     console.log(result)
+    // }
     render() {
         const dataSource = this.state.productList
           
@@ -86,12 +100,12 @@ export default class Product extends Component {
             <Card 
                 title={
                     <div>
-                        <Select defaultValue="name">
-                            <Option value="name">按名称搜索</Option>
-                            <Option value="desc">按描述搜索</Option>
+                        <Select defaultValue="productName" onChange={(value)=>{ this.setState({typeSerach:value}) }}>
+                            <Option value="productName">按名称搜索</Option>
+                            <Option value="productDesc">按描述搜索</Option>
                         </Select>
-                        <Input placeholder="输入关键字" style={{width:'150px',margin:'0 10px'}} allowClear />
-                        <Button type="primary">
+                        <Input placeholder="输入关键字" onChange={(event)=>{this.setState({keyWords:event.target.value})}} style={{width:'150px',margin:'0 10px'}} allowClear />
+                        <Button type="primary" onClick={()=>{this.Serach=true;this.getProductList(1,PAGE_SIZE);this.setState({current:1})}}>
                             <Icon type="search" />搜索
                         </Button>
                     </div>
@@ -107,6 +121,19 @@ export default class Product extends Component {
                     columns={columns} 
                     bordered 
                     rowKey="id"
+                    pagination={
+                        {
+                            total:this.state.total,
+                            pageSize:PAGE_SIZE,
+                            current:this.state.current,
+                            onChange:(page)=>{
+                                this.getProductList(page,PAGE_SIZE)
+                                this.setState({
+                                    current:page
+                                })
+                            }
+                        }
+                    }
                 />;
             </Card>
         )
