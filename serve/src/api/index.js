@@ -20,3 +20,5 @@ export const apiCategoryAdd=(categoryName)=>Myaxios.post('/category/add',categor
 export const apiCategoryUpdate=(categoryValue)=>Myaxios.post('/category/update',categoryValue)//分类更新接口
 export const apiProductList=(pageNum,pageSize)=> Myaxios.get('/product/list',{params:{pageNum,pageSize}})//获取商品列表
 export const apiProductSearch=(typeSerach,keyWords,pageNum,pageSize)=>Myaxios.get('/product/search',{params:{[typeSerach]:keyWords,pageNum,pageSize}})//获取商品搜索列表
+export const apiProductUpdateStatus=(productId,status)=>Myaxios.post('/product/updateStatus',{productId,status})//商品状态更新
+

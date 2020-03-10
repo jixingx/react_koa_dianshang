@@ -39,13 +39,14 @@ class LeftNav extends Component {
     }
     render() {
         const {pathname}=this.props.history.location
+         
         const openKeys=this.props.history.location.pathname.split('/').splice(2)
         
         return (
             <div className="left-nav">
                 <h2 className="left-nav-title">商城后台管理</h2>
                 <Menu
-                    selectedKeys={[pathname.split('/').reverse()[0]]}
+                    selectedKeys={[pathname.indexOf('product')>-1?'product':pathname.split('/').reverse()[0]]}
                     defaultOpenKeys={openKeys}
                     mode="inline"
                     theme="dark"

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Card,Button,Icon,Select,Input,Table,message } from 'antd';
-import {apiProductList,apiProductSearch} from '../../api/index'
+import {apiProductList,apiProductSearch,apiProductUpdateStatus} from '../../api/index'
 import {PAGE_SIZE} from '../../config/index'
 
 const { Option } = Select;
@@ -35,11 +35,22 @@ export default class Product extends Component {
     componentDidMount(){
         this.getProductList(1,PAGE_SIZE)
     }
-    //搜索
-    // getSearch=async (pageNum,pageSize)=>{
-    //     let result=await apiProductSearch([this.state.typeSerach],this.state.keyWords,pageNum,pageSize)
-    //     console.log(result)
-    // }
+    //更新商品状态
+    setStatus=async (id,status)=>{
+        console.log(id,status)
+        if(status===1){
+            status=2
+        }else{
+            status=1;
+        }
+        let result=await apiProductUpdateStatus(id,status);
+        if(result.status===0){
+            message.success(result.msg)
+            this.getProductList(1,PAGE_SIZE)
+        }else{
+            message.warning(result.msg)
+        }
+    }
     render() {
         const dataSource = this.state.productList
           
@@ -67,15 +78,15 @@ export default class Product extends Component {
             },
             {
                 title: '状态',
-                dataIndex: 'status',
+                //dataIndex: 'status',
                 key: 'status',
                 align:"center",
                 width:"10%",
-                render:(status)=>{
+                render:(item)=>{
                     return (
                         <div>
-                            <Button type={status===1?'danger':'primary'}>{status===1?'下架':'上架'}</Button><br />
-                            <span>{status===1?'在售':'已停售'}</span>
+                            <Button type={item.status===1?'danger':'primary'} onClick={()=>{this.setStatus(item.id,item.status)}}>{item.status===1?'下架':'上架'}</Button><br />
+                            <span>{item.status===1?'在售':'已停售'}</span>
                         </div>
                     )
                 }
@@ -89,8 +100,8 @@ export default class Product extends Component {
                 render:()=>{
                     return (
                         <div>
-                            <Button type="link">详情</Button><br />
-                            <Button type="link">修改</Button>
+                            <Button type="link" onClick={()=>{this.props.history.push('/admin/prod_about/product/detailproduct/123')}}>详情</Button><br />
+                            <Button type="link" onClick={()=>{this.props.history.push('/admin/prod_about/product/addeditproduct')}}>修改</Button>
                         </div>
                     )
                 }
@@ -111,7 +122,7 @@ export default class Product extends Component {
                     </div>
                 } 
                 extra={
-                    <Button type="primary">
+                    <Button type="primary" onClick={()=>{this.props.history.push('/admin/prod_about/product/addeditproduct')}}>
                         <Icon type="plus-circle" />增加商品
                     </Button>
                 }

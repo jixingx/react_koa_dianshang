@@ -61,7 +61,11 @@ class Header extends Component {
         });
     }
     SetTiTle=()=>{
-        let pathname=this.props.history.location.pathname.split('/').reverse()[0]
+        let {pathname}=this.props.history.location
+        if(pathname.indexOf('product')>-1){
+            pathname='product'
+        }
+        pathname=pathname.split('/').reverse()[0]
         let title='';
         MenuArrays.forEach((item)=>{
             if(item.children instanceof Array){

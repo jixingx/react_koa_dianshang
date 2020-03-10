@@ -6,6 +6,8 @@ import LeftNav from './left_nav/left_nav'
 import Home from "../../components/Home/home"
 import Category from "../../components/Category/category"
 import Product from "../../components/Product/product"
+import AddEditProduct from "../../components/Product/addeditproduct"
+import DetailProduct from "../../components/Product/detailproduct"
 import User from "../../components/User/user"
 import Role from "../../components/Role/role"
 import Bar from "../../components/Bar/bar"
@@ -38,7 +40,9 @@ class Admin extends Component {
                         <Switch>
                             <Route path="/admin/home" component={Home}/>
                             <Route path="/admin/prod_about/category" component={Category}/>
-                            <Route path="/admin/prod_about/product" component={Product}/>
+                            <Route exact path="/admin/prod_about/product"  component={Product}/>
+                            <Route path="/admin/prod_about/product/addeditproduct"   component={AddEditProduct}/>
+                            <Route path="/admin/prod_about/product/detailproduct/:id" component={DetailProduct}/>
                             <Route path="/admin/user" component={User}/>
                             <Route path="/admin/role" component={Role}/>
                             <Route path="/admin/charts/bar" component={Bar}/>

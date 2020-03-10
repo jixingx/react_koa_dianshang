@@ -245,4 +245,28 @@ router.get("/product/search",async (ctx)=>{
         }
     }
 })
+//更改商品状态
+router.post('/product/updateStatus',async (ctx)=>{
+    try {
+        let {productId,status}=ctx.request.body
+        let sql=`UPDATE products SET status='${status}' WHERE id=${productId}`;
+        let updateStatus=await Dd(sql)
+        if(updateStatus.affectedRows>0){
+            ctx.body={
+                status:0,
+                msg:"商品状态更新成功"
+            }
+        }else{
+            ctx.body={
+                status:1,
+                msg:'商品状态更新失败'
+            }
+        }
+    } catch (error) {
+        ctx.body={
+            code:500,
+            msg:error
+        }
+    }
+})
 module.exports=router
