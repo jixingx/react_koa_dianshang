@@ -97,10 +97,10 @@ export default class Product extends Component {
                 key: 'operation',
                 align:"center",
                 width:"10%",
-                render:()=>{
+                render:(item)=>{
                     return (
                         <div>
-                            <Button type="link" onClick={()=>{this.props.history.push('/admin/prod_about/product/detailproduct/123')}}>详情</Button><br />
+                            <Button type="link" onClick={()=>{this.props.history.push('/admin/prod_about/product/detailproduct/'+item.id)}}>详情</Button><br />
                             <Button type="link" onClick={()=>{this.props.history.push('/admin/prod_about/product/addeditproduct')}}>修改</Button>
                         </div>
                     )

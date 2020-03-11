@@ -176,6 +176,23 @@
         }
 ```
 
+商品管理详情接口:/product/detail
+```
+  请求分时:post
+  所需参数：productId,status
+  返回参数：
+    1. 成功返回：
+        ctx.body={
+            status:0,
+            data:qureyDate
+        }
+    2. 无数据返回：
+        ctx.body={
+            status:1,
+            msg:'商品详细获取失败'
+        }
+```
+
 ## 后台
 ### 框架和技术
 1. react

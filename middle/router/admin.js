@@ -269,4 +269,30 @@ router.post('/product/updateStatus',async (ctx)=>{
         }
     }
 })
+//获取商品详细接口
+router.post('/product/detail',async (ctx)=>{
+    try {
+        let {productId}=ctx.request.body
+        let sql=`SELECT * FROM products WHERE id='${productId}'`;
+        let qureyDate=await Dd(sql)
+        qureyDate=qureyDate[0]
+        qureyDate.imgs=qureyDate.imgs.indexOf(',')>-1?qureyDate.imgs.split(','):qureyDate.imgs.split(' ')
+        if(qureyDate){
+            ctx.body={
+                status:0,
+                data:qureyDate
+            }
+        }else{
+            ctx.body={
+                status:1,
+                msg:'商品详细获取失败'
+            }
+        }
+    } catch (error) {
+        ctx.body={
+            code:500,
+            msg:error
+        }
+    }
+})
 module.exports=router
