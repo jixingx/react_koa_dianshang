@@ -7,6 +7,10 @@ const Dd=require('../model/Db')
 const jwt=require('jsonwebtoken')
 //引入md5模块
 const md5=require('md5');
+//引入fs模块
+const fs=require('fs');
+//引入path模块
+const path=require('path');
 
 //登录接口
 router.post('/login',async (ctx)=>{
@@ -288,6 +292,88 @@ router.post('/product/detail',async (ctx)=>{
                 msg:'商品详细获取失败'
             }
         }
+    } catch (error) {
+        ctx.body={
+            code:500,
+            msg:error
+        }
+    }
+})
+//图片上传功能
+router.post('/upload',async (ctx)=>{
+    try {
+        // 上传单个文件 
+        const file = ctx.request.files.filename; 
+        if(file.name){
+            //console.log(file)
+            // 获取上传文件 
+            // 创建可读流 
+            const reader = fs.createReadStream(file.path);
+            let names=file.name.split('.')
+            let filename=Date.now()+"."+names[names.length-1];
+            //console.log(filename)
+            let filePath = path.join(__dirname, '../static/upload') + `/${filename}`;
+            
+            // 创建可写流 
+            const upStream = fs.createWriteStream(filePath); 
+            // 可读流通过管道写入可写流 
+            reader.pipe(upStream); 
+            ctx.body={
+                status:0,
+                data:{
+                    name:filename,
+                    url:"http://localhost:8080/upload/"+filename
+                }
+            }
+        }else{
+            ctx.body={
+                status:1,
+                msg:'上传失败'
+            }
+        }
+        // 上传多个文件
+        // const files = ctx.request.files.file; // 获取上传文件
+        // for (let file of files) {
+        //     // 创建可读流
+        //     const reader = fs.createReadStream(file.path);
+        //     // 获取上传文件扩展名
+        //     let filePath = path.join(__dirname, 'public/upload/') + `/${file.name}`;
+        //     // 创建可写流
+        //     const upStream = fs.createWriteStream(filePath);
+        //     // 可读流通过管道写入可写流
+        //     reader.pipe(upStream);
+        // }
+
+    } catch (error) {
+        ctx.body={
+            code:500,
+            msg:error
+        }
+    }
+})
+//删除文件接口
+router.post('/deletefile',async (ctx)=>{
+    try {
+        const {name} = ctx.request.body;
+        
+        let files=fs.readdirSync('static/upload')
+        let file=files.find((item)=>{
+            return item==name;
+        })
+        if(file){
+            fs.unlinkSync('static/upload/'+file)
+            ctx.body={
+                status:0,
+                msg:'删除成功'
+            }
+        }else{
+            ctx.body={
+                status:1,
+                msg:'暂无此文件删除失败'
+            }
+        }
+
+        
     } catch (error) {
         ctx.body={
             code:500,

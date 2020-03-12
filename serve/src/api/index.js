@@ -22,4 +22,5 @@ export const apiProductList=(pageNum,pageSize)=> Myaxios.get('/product/list',{pa
 export const apiProductSearch=(typeSerach,keyWords,pageNum,pageSize)=>Myaxios.get('/product/search',{params:{[typeSerach]:keyWords,pageNum,pageSize}})//获取商品搜索列表
 export const apiProductUpdateStatus=(productId,status)=>Myaxios.post('/product/updateStatus',{productId,status})//商品状态更新
 export const apiProductDetail=(productId)=>Myaxios.post('/product/detail',{productId})//获取商品详细
+export const apiDeleteFile=(name)=>Myaxios.post('/deletefile',{name})//删除文件
 

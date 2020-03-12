@@ -5,9 +5,20 @@ const app=new Koa();
 const cors=require('koa2-cors');
 app.use(cors())
 
-//引入koa-bodyparser，解决post请求
-const bodyParser=require('koa-bodyparser');
-app.use(bodyParser());
+//引入koa-body，解决post请求和文件上传
+const koaBody=require('koa-body');
+app.use(koaBody({
+    multipart:true, // 支持文件上传
+    formidable:{
+        //uploadDir:path.join(__dirname,'public/upload/'), // 设置文件上传目录(这项根据自己逻辑处理)
+        keepExtensions: true,    // 保持文件的后缀
+        maxFieldsSize:2 * 1024 * 1024, // 文件上传大小
+        onFileBegin:(name,file) => { // 文件上传前的设置
+        // console.log(`name: ${name}`);
+        // console.log(file);
+        },
+    }
+}));
 
 //引入koa-static,处理静态资源
 const path=require('path');
@@ -33,7 +44,8 @@ app.use(async (ctx, next) => {
 const jwtKoa = require('koa-jwt')
 app.use(jwtKoa({secret:"secret"}).unless({//第一个参数密匙，第二个参数那些URL不需要验证
     path: [
-        /^\/admin\/login/
+        /^\/admin\/login/,
+        /^\/admin\/upload/
         // /^\/default\/getTypeInfo/,
         // /^\/default\/getArticleList/,
         // /^\/default\/getArticleById/

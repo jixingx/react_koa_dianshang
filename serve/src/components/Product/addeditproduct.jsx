@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import {Card,Button,Icon,Form,Input,Select } from 'antd';
 import {apiCategory} from '../../api/index'
+import PicturesWalls from './pictureswalls'
+import RichTextEditor from './rich_text_editor'
 
 const { Option } = Select;
 
@@ -28,6 +30,10 @@ class AddEditProduct extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
             console.log('Received values of form: ', values);
+                let imgArr=this.refs.picturesWalls.getPictureNameArr()
+                imgArr=imgArr.join(',')
+                values.imgs=imgArr
+                console.log(values)
             }
         });
     };
@@ -100,10 +106,10 @@ class AddEditProduct extends Component {
                         )}
                     </Form.Item>
                     <Form.Item label="商品图片">
-                        图片上传
+                        <PicturesWalls ref="picturesWalls" />
                     </Form.Item>
                     <Form.Item label="商品详情">
-                        富文本
+                        <RichTextEditor />
                     </Form.Item>
                     <Button type="primary" htmlType="submit" className="login-form-button">
                         Log in

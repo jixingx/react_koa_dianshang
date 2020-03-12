@@ -5,7 +5,7 @@
 使用`nodejs`
 
 1. koa2
-2. koa-bodyparser(解决post请求参数)
+2. ~~koa-bodyparser(解决post请求参数)~~ 改换为koa-body(解决post请求参数和上传文件)
 3. koa-router(路由模块)
 4. koa-static(处理静态资源)
 5. koa2-cors(处理跨域)
@@ -13,6 +13,7 @@
 7. jsonwebtoken(处理token)
 8. koa-jwt(主要提供路有权限控制的功能，它会对需要限制的资源请求进行检查)
 9. md5(对密码进行加密)
+10. koa-multer(上传文件)
 
 ### 接口
 > 所有接口前置`http://localhost:8080/admin`
@@ -192,7 +193,42 @@
             msg:'商品详细获取失败'
         }
 ```
+文件上传接口:/upload
+```
+  请求分时:post
+  所需参数：filename
+  返回参数：
+    1. 成功返回：
+        ctx.body={
+            status:0,
+            data:{
+                name:filename,
+                url:"http://localhost:8080/upload/"+filename
+            }
+        }
+    2. 失败返回：
+        ctx.body={
+            status:1,
+            msg:'上传失败'
+        }
+```
 
+文件删除接口:/upload
+```
+  请求分时:post
+  所需参数：filename
+  返回参数：
+    1. 成功返回：
+        ctx.body={
+            status:0,
+            msg:'删除成功'
+        }
+    2. 失败返回：
+        ctx.body={
+            status:1,
+            msg:'暂无此文件，删除失败'
+        }
+```
 ## 后台
 ### 框架和技术
 1. react
@@ -207,6 +243,7 @@
 10. screenfull(全屏切换插件)
 11. dayjs (时间插件)
 12. jsonp(jsonp请求插件)
+13. draft-js react-draft-wysiwyg draftjs-to-html (富文本插件)
 
 
 
