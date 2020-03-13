@@ -23,4 +23,5 @@ export const apiProductSearch=(typeSerach,keyWords,pageNum,pageSize)=>Myaxios.ge
 export const apiProductUpdateStatus=(productId,status)=>Myaxios.post('/product/updateStatus',{productId,status})//商品状态更新
 export const apiProductDetail=(productId)=>Myaxios.post('/product/detail',{productId})//获取商品详细
 export const apiDeleteFile=(name)=>Myaxios.post('/deletefile',{name})//删除文件
+export const apiProductAdd=({imgs,name,desc_ribe,price,categoryId,detail})=>Myaxios.post('/product/add',{imgs,name,desc_ribe,price,categoryId,detail})//添加商品
 

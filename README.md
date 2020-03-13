@@ -229,6 +229,23 @@
             msg:'暂无此文件，删除失败'
         }
 ```
+
+文件删除接口:/product/add
+```
+  请求分时:post
+  所需参数：imgs,name,desc_ribe,price,categoryId,detail
+  返回参数：
+    1. 成功返回：
+        ctx.body={
+            status:0,
+            msg:'新增成功'
+        }
+    2. 失败返回：
+        ctx.body={
+            status:1,
+            msg:'新增失败'
+        }
+```
 ## 后台
 ### 框架和技术
 1. react

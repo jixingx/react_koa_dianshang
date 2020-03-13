@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import {Card,Button,Icon,Form,Input,Select } from 'antd';
-import {apiCategory} from '../../api/index'
+import {Card,Button,Icon,Form,Input,Select,message } from 'antd';
+import {apiCategory, apiProductAdd} from '../../api/index'
 import PicturesWalls from './pictureswalls'
 import RichTextEditor from './rich_text_editor'
 
@@ -27,13 +27,20 @@ class AddEditProduct extends Component {
     }
     handleSubmit = e => {
         e.preventDefault();
-        this.props.form.validateFields((err, values) => {
+        this.props.form.validateFields(async (err, values) => {
             if (!err) {
-            console.log('Received values of form: ', values);
                 let imgArr=this.refs.picturesWalls.getPictureNameArr()
                 imgArr=imgArr.join(',')
                 values.imgs=imgArr
+                values.detail=this.refs.richTextEditor.getRichText()
                 console.log(values)
+                let result=await apiProductAdd(values)
+                if(result.status===0){
+                    message.success(result.msg)
+                    this.props.history.replace('/admin/prod_about/product')
+                }else{
+                    message.warning(result.msg)
+                }
             }
         });
     };
@@ -86,7 +93,9 @@ class AddEditProduct extends Component {
                             rules: [{ required: true, message: '商品价格必填' }],
                         })(
                             <Input
-                            placeholder="商品价格"
+                                placeholder="商品价格"
+                                prefix="￥"
+                                addonAfter="元"
                             />
                         )}
                     </Form.Item>
@@ -108,11 +117,11 @@ class AddEditProduct extends Component {
                     <Form.Item label="商品图片">
                         <PicturesWalls ref="picturesWalls" />
                     </Form.Item>
-                    <Form.Item label="商品详情">
-                        <RichTextEditor />
+                    <Form.Item label="商品详情" wrapperCol={{span:15}}>
+                        <RichTextEditor ref="richTextEditor" />
                     </Form.Item>
                     <Button type="primary" htmlType="submit" className="login-form-button">
-                        Log in
+                        提交
                     </Button>
                 </Form>
             </Card>

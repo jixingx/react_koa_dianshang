@@ -381,4 +381,28 @@ router.post('/deletefile',async (ctx)=>{
         }
     }
 })
+//添加商品详细接口
+router.post('/product/add',async (ctx)=>{
+    try {
+        let {imgs,name,desc_ribe,price,categoryId,detail}=ctx.request.body
+        let sql=`INSERT INTO products VALUES(null,1,'${imgs}','${name}','${desc_ribe}',${price},${categoryId},'${detail}')`;
+        let addData=await Dd(sql)
+        if(addData.affectedRows>0){
+            ctx.body={
+                status:0,
+                msg:"新增成功"
+            }
+        }else{
+            ctx.body={
+                status:1,
+                msg:'新增失败'
+            }
+        }
+    } catch (error) {
+        ctx.body={
+            code:500,
+            msg:error
+        }
+    }
+})
 module.exports=router
