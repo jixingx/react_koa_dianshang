@@ -280,7 +280,12 @@ router.post('/product/detail',async (ctx)=>{
         let sql=`SELECT * FROM products WHERE id='${productId}'`;
         let qureyDate=await Dd(sql)
         qureyDate=qureyDate[0]
-        qureyDate.imgs=qureyDate.imgs.indexOf(',')>-1?qureyDate.imgs.split(','):qureyDate.imgs.split(' ')
+        if(qureyDate.imgs){
+            qureyDate.imgs=qureyDate.imgs.indexOf(',')>-1?qureyDate.imgs.split(','):qureyDate.imgs.split()
+        }else{
+            qureyDate.imgs=[]
+        }
+        
         if(qureyDate){
             ctx.body={
                 status:0,
@@ -355,23 +360,40 @@ router.post('/upload',async (ctx)=>{
 router.post('/deletefile',async (ctx)=>{
     try {
         const {name} = ctx.request.body;
+        let sql=`SELECT id,imgs from products WHERE imgs LIKE '%${name}%'`;
+        let queryImgs=await Dd(sql)
+        arrImgs=queryImgs[0].imgs.indexOf(',')>-1?queryImgs[0].imgs.split(','):queryImgs[0].imgs.split(' ')
+        let imgIndex=arrImgs.indexOf(name);
         
-        let files=fs.readdirSync('static/upload')
-        let file=files.find((item)=>{
-            return item==name;
-        })
-        if(file){
-            fs.unlinkSync('static/upload/'+file)
-            ctx.body={
-                status:0,
-                msg:'删除成功'
+        arrImgs.splice(imgIndex,1)
+        let imgs=arrImgs?arrImgs.join(','):arrImgs.join('')
+        console.log(imgs)
+        sql=`UPDATE products SET imgs='${imgs}' WHERE id=${queryImgs[0].id}`
+        let updateImgs=await Dd(sql)
+        if(updateImgs.affectedRows>0){
+            let files=fs.readdirSync('static/upload')
+            let file=files.find((item)=>{
+                return item==name;
+            })
+            if(file){
+                fs.unlinkSync('static/upload/'+file)
+                ctx.body={
+                    status:0,
+                    msg:'删除成功'
+                }
+            }else{
+                ctx.body={
+                    status:1,
+                    msg:'暂无此文件删除失败'
+                }
             }
         }else{
             ctx.body={
                 status:1,
-                msg:'暂无此文件删除失败'
+                msg:'商品删除失败'
             }
         }
+        
 
         
     } catch (error) {
@@ -396,6 +418,32 @@ router.post('/product/add',async (ctx)=>{
             ctx.body={
                 status:1,
                 msg:'新增失败'
+            }
+        }
+    } catch (error) {
+        ctx.body={
+            code:500,
+            msg:error
+        }
+    }
+})
+//修改商品管理
+router.post('/product/edit',async (ctx)=>{
+    try {
+        let {id,imgs,name,desc_ribe,price,categoryId,detail}=ctx.request.body
+        let sql=`UPDATE products SET imgs='${imgs}',name='${name}',desc_ribe='${desc_ribe}',price=${price},categoryId=${categoryId},detail='${detail}' WHERE id=${id}`
+        
+        let updateData=await Dd(sql);
+        
+        if(updateData.affectedRows>0){
+            ctx.body={
+                status:0,
+                msg:"商品修改成功"
+            }
+        }else{
+            ctx.body={
+                status:1,
+                msg:'商品修改失败'
             }
         }
     } catch (error) {

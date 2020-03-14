@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Upload, Icon, Modal,message } from 'antd';
 import {BASEURL} from '../../config/index'
+import {MIURL} from '../../config/index'
 import {apiDeleteFile} from '../../api/index'
 
 //将图片转换为base64
@@ -60,6 +61,16 @@ export default class PicturesWalls extends Component {
             arr.push(file.name)
         })
         return arr;
+    }
+
+    setPictureNameArr=(imgNameArr)=>{
+        let arr=[];
+        imgNameArr.forEach((item,index)=>{
+            arr.push({uid:-index,name:item,url:`${MIURL}/upload/${item}`})
+        })
+        this.setState({
+            fileList:arr
+        })
     }
 
     render() {

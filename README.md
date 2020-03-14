@@ -230,7 +230,7 @@
         }
 ```
 
-文件删除接口:/product/add
+添加商品接口:/product/add
 ```
   请求分时:post
   所需参数：imgs,name,desc_ribe,price,categoryId,detail
@@ -244,6 +244,23 @@
         ctx.body={
             status:1,
             msg:'新增失败'
+        }
+```
+
+修改商品管理接口:/product/edit
+```
+  请求分时:post
+  所需参数：id,imgs,name,desc_ribe,price,categoryId,detail
+  返回参数：
+    1. 成功返回：
+        ctx.body={
+            status:0,
+            msg:"商品修改成功"
+        }
+    2. 失败返回：
+        ctx.body={
+            status:1,
+            msg:'商品修改失败'
         }
 ```
 ## 后台

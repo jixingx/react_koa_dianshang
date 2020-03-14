@@ -75,6 +75,7 @@ export default class DetailProduct extends Component {
                         <span className="detail-title">商品图片：</span>
                         <span>
                         {
+                            // this.state.productDel.imgs.length
                             this.state.productDel.imgs.map((item,index)=>{
                                 return <img key={index} src={MIURL+'/upload/'+item} style={{width:"240px",height:"240px"}} alt=" "/>
                             })

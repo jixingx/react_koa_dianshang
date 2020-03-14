@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {Card,Button,Icon,Form,Input,Select,message } from 'antd';
-import {apiCategory, apiProductAdd} from '../../api/index'
+import {apiCategory, apiProductAdd,apiProductDetail,apiProductEdit} from '../../api/index'
 import PicturesWalls from './pictureswalls'
 import RichTextEditor from './rich_text_editor'
 
@@ -8,7 +8,16 @@ const { Option } = Select;
 
 class AddEditProduct extends Component {
     state={
-        categorys:[]
+        categorys:[],
+        currentProduct:{
+            id:'',
+            imgs: [],
+            name: "",
+            desc_ribe: "",
+            price: 0,
+            categoryId: '',
+            detail: ''
+        }
     }
     getCategory=async ()=>{
         let result=await apiCategory()
@@ -22,7 +31,23 @@ class AddEditProduct extends Component {
             })
         }
     }
+    getProductInfo=async (id)=>{
+        let result=await apiProductDetail(id)
+        if(result.status===0){
+            this.refs.picturesWalls.setPictureNameArr(result.data.imgs)
+            this.refs.richTextEditor.setRichText(result.data.detail)
+            this.setState({
+                currentProduct:result.data
+            })
+        }else{
+            message.warning(result.msg)
+        }
+    }
     componentDidMount(){
+        const {id}=this.props.match.params
+        if(id){
+            this.getProductInfo(id)
+        }
         this.getCategory()
     }
     handleSubmit = e => {
@@ -33,8 +58,14 @@ class AddEditProduct extends Component {
                 imgArr=imgArr.join(',')
                 values.imgs=imgArr
                 values.detail=this.refs.richTextEditor.getRichText()
-                console.log(values)
-                let result=await apiProductAdd(values)
+                // console.log(values)
+                let result;
+                if(!this.state.currentProduct.id){
+                    result=await apiProductAdd(values)
+                }else{
+                    values.id=this.state.currentProduct.id
+                    result=await apiProductEdit(values)
+                }
                 if(result.status===0){
                     message.success(result.msg)
                     this.props.history.replace('/admin/prod_about/product')
@@ -46,6 +77,8 @@ class AddEditProduct extends Component {
     };
     render() {
         const { getFieldDecorator } = this.props.form;
+        const {urlid}=this.props.match.params
+        const {name,desc_ribe,price,categoryId}=this.state.currentProduct
         const formItemLayout = {
             labelCol: {
               xs: { span: 24 },
@@ -65,13 +98,14 @@ class AddEditProduct extends Component {
                         <Button type="link" size="small" onClick={this.props.history.goBack}>
                             <Icon type="arrow-left" style={{fontSize:'20px'}} />
                         </Button>
-                        <span>商品添加</span>
+                        <span>商品{urlid?'修改':'添加'}</span>
                     </div>
                 }
             >
                 <Form {...formItemLayout} onSubmit={this.handleSubmit}>
                     <Form.Item label="商品名称">
                         {getFieldDecorator('name', {
+                            initialValue:name||'',
                             rules: [{ required: true, message: '商品名称必填' }],
                         })(
                             <Input
@@ -81,6 +115,7 @@ class AddEditProduct extends Component {
                     </Form.Item>
                     <Form.Item label="商品描述">
                         {getFieldDecorator('desc_ribe', {
+                            initialValue:desc_ribe||'',
                             rules: [{ required: true, message: '商品描述必填' }],
                         })(
                             <Input
@@ -90,6 +125,7 @@ class AddEditProduct extends Component {
                     </Form.Item>
                     <Form.Item label="商品价格">
                         {getFieldDecorator('price', {
+                            initialValue:price||'',
                             rules: [{ required: true, message: '商品价格必填' }],
                         })(
                             <Input
@@ -101,7 +137,7 @@ class AddEditProduct extends Component {
                     </Form.Item>
                     <Form.Item label="商品分类">
                         {getFieldDecorator('categoryId', {
-                            initialValue:"",
+                            initialValue:categoryId||"",
                             rules: [{ required: true, message: '商品分类必填' }],
                         })(
                             <Select style={{ width: 120 }}>

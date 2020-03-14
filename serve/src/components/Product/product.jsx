@@ -101,7 +101,7 @@ export default class Product extends Component {
                     return (
                         <div>
                             <Button type="link" onClick={()=>{this.props.history.push('/admin/prod_about/product/detailproduct/'+item.id)}}>详情</Button><br />
-                            <Button type="link" onClick={()=>{this.props.history.push('/admin/prod_about/product/addeditproduct')}}>修改</Button>
+                            <Button type="link" onClick={()=>{this.props.history.push('/admin/prod_about/product/addeditproduct/'+item.id)}}>修改</Button>
                         </div>
                     )
                 }
