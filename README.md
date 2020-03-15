@@ -263,6 +263,40 @@
             msg:'商品修改失败'
         }
 ```
+
+角色列表接口:/roles/list
+```
+  请求分时:get
+  所需参数：
+  返回参数：
+    1. 成功返回：
+        ctx.body={
+            status:0,
+            data:qureyDate
+        }
+    2. 失败返回：
+        ctx.body={
+            status:1,
+            msg:'获取列表失败'
+        }
+```
+
+角色添加接口:/roles/add
+```
+  请求分时:get
+  所需参数：
+  返回参数：
+    1. 成功返回：
+        ctx.body={
+            status:0,
+            msg:"新增成功"
+        }
+    2. 失败返回：
+        ctx.body={
+            status:1,
+            msg:'新增失败'
+        }
+```
 ## 后台
 ### 框架和技术
 1. react

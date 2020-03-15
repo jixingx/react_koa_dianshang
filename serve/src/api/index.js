@@ -25,4 +25,5 @@ export const apiProductDetail=(productId)=>Myaxios.post('/product/detail',{produ
 export const apiDeleteFile=(name)=>Myaxios.post('/deletefile',{name})//删除文件
 export const apiProductAdd=({imgs,name,desc_ribe,price,categoryId,detail})=>Myaxios.post('/product/add',{imgs,name,desc_ribe,price,categoryId,detail})//添加商品
 export const apiProductEdit=({id,imgs,name,desc_ribe,price,categoryId,detail})=>Myaxios.post('/product/edit',{id,imgs,name,desc_ribe,price,categoryId,detail})//更新商品
-
+export const apiRolesList=()=> Myaxios.get('/roles/list')//获取角色列表
+export const apiRolesAdd=({name})=> Myaxios.post('/roles/add',{name})//添加角色

@@ -453,4 +453,51 @@ router.post('/product/edit',async (ctx)=>{
         }
     }
 })
+//获取角色列表接口
+router.get("/roles/list",async (ctx)=>{
+    try {
+        let sql=`SELECT * FROM roles`;
+        let qureyDate=await Dd(sql)
+        if(qureyDate.length>0){
+            ctx.body={
+                status:0,
+                data:qureyDate
+            }
+        }else{
+            ctx.body={
+                status:1,
+                msg:'获取列表失败'
+            }
+        }
+    } catch (error) {
+        ctx.body={
+            code:500,
+            msg:error
+        }
+    }
+})
+//添加商品详细接口
+router.post('/roles/add',async (ctx)=>{
+    try {
+        let {name}=ctx.request.body
+        let sql=`INSERT INTO roles (id,name,create_time) VALUES(null,'${name}',now())`;
+        let addData=await Dd(sql)
+        if(addData.affectedRows>0){
+            ctx.body={
+                status:0,
+                msg:"新增成功"
+            }
+        }else{
+            ctx.body={
+                status:1,
+                msg:'新增失败'
+            }
+        }
+    } catch (error) {
+        ctx.body={
+            code:500,
+            msg:error
+        }
+    }
+})
 module.exports=router
