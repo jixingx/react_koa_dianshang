@@ -458,6 +458,7 @@ router.get("/roles/list",async (ctx)=>{
     try {
         let sql=`SELECT * FROM roles`;
         let qureyDate=await Dd(sql)
+        
         if(qureyDate.length>0){
             ctx.body={
                 status:0,
@@ -476,7 +477,7 @@ router.get("/roles/list",async (ctx)=>{
         }
     }
 })
-//添加商品详细接口
+//添加角色接口
 router.post('/roles/add',async (ctx)=>{
     try {
         let {name}=ctx.request.body
@@ -500,4 +501,31 @@ router.post('/roles/add',async (ctx)=>{
         }
     }
 })
+//角色授权
+router.post('/roles/update',async (ctx)=>{
+    try {
+        let {id,menus,auth_name}=ctx.request.body
+        let sql=`UPDATE roles SET menus='${menus}',auth_name='${auth_name}',auth_time=now() WHERE id=${id}`
+        
+        let updateData=await Dd(sql);
+        
+        if(updateData.affectedRows>0){
+            ctx.body={
+                status:0,
+                msg:"授权成功"
+            }
+        }else{
+            ctx.body={
+                status:1,
+                msg:'授权失败'
+            }
+        }
+    } catch (error) {
+        ctx.body={
+            code:500,
+            msg:error
+        }
+    }
+})
+
 module.exports=router

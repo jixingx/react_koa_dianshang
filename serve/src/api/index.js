@@ -27,3 +27,4 @@ export const apiProductAdd=({imgs,name,desc_ribe,price,categoryId,detail})=>Myax
 export const apiProductEdit=({id,imgs,name,desc_ribe,price,categoryId,detail})=>Myaxios.post('/product/edit',{id,imgs,name,desc_ribe,price,categoryId,detail})//更新商品
 export const apiRolesList=()=> Myaxios.get('/roles/list')//获取角色列表
 export const apiRolesAdd=({name})=> Myaxios.post('/roles/add',{name})//添加角色
+export const apiRolesUpdate=(id,menus,auth_name)=> Myaxios.post('/roles/update',{id,menus,auth_name})//角色授权

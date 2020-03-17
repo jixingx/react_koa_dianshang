@@ -1,12 +1,21 @@
 import React, { Component } from 'react'
-import { Card,Button,Icon,Table,Modal,Form,Input, message } from 'antd';
-import {apiRolesList,apiRolesAdd} from '../../api/index'
+import { Card,Button,Icon,Table,Modal,Form,Input, message,Tree } from 'antd';
+import {apiRolesList,apiRolesAdd,apiRolesUpdate} from '../../api/index'
 import dayjs from 'dayjs'
+import menuList from '../../config/menu-config'
+import {connect} from 'react-redux'
+
+const { TreeNode } = Tree;
+
+
+  
 
 class Role extends Component {
     state = { 
         visible: false,
-        roleList:[] 
+        visibleAuth: false,
+        roleList:[],
+        checkedKeys: []
     };
 
     showModal = () => {
@@ -14,7 +23,7 @@ class Role extends Component {
             visible: true
         });
     };
-
+    // 获取角色列表
     getRoleList=async ()=>{
         let result=await apiRolesList()
         if(result.status===0){
@@ -29,7 +38,7 @@ class Role extends Component {
     componentDidMount(){
         this.getRoleList()
     }
-
+    // 添加角色确认函数
     handleOk = (e) => {
         // console.log(e);
         // this.setState({
@@ -52,13 +61,56 @@ class Role extends Component {
             }
         });
     };
-    
+    // 添加角色取消函数
     handleCancel = () => {
         this.setState({
             visible: false,
         });
         this.props.form.resetFields()
     };
+    //授权确认函数
+    handleAuthOk =async (e) => {
+        // console.log(this.id)
+        // console.log(this.props.userInfo.user.username,this.state.checkedKeys.toString())
+        
+        let result=await apiRolesUpdate(this.id,this.state.checkedKeys.toString(),this.props.userInfo.user.username)
+        if(result.status===0){
+            message.success(result.msg)
+            this.getRoleList()
+            this.setState({
+                visibleAuth: false,
+            });
+        }else{
+            message.warning(result.msg)
+        }
+        
+    }
+    //授权取消函数
+    handleAuthCancel = () => {
+        this.setState({
+            visibleAuth: false,
+        });
+    };
+
+   
+    
+    onCheck = checkedKeys => {
+        //console.log('onCheck', checkedKeys);
+        this.setState({ checkedKeys });
+    };
+    
+    
+    renderTreeNodes = data =>
+    data.map(item => {
+        if (item.children) {
+            return (
+                <TreeNode title={item.title} key={item.key} dataRef={item}>
+                {this.renderTreeNodes(item.children)}
+                </TreeNode>
+            );
+        }
+        return <TreeNode key={item.key} {...item} />;
+    });
     render() {
         const dataSource = this.state.roleList;
         
@@ -92,16 +144,35 @@ class Role extends Component {
             },
             {
                 title: '操作',
-                //dataIndex: 'auth_name',
+                dataIndex: 'id',
                 key: 'operation',
-                render:()=>{
+                render:(id)=>{
                     return (
-                        <Button type="link">设置权限</Button>
+                        <Button type="link" 
+                            onClick={
+                                ()=>{
+                                    this.id=id
+                                    let itemRlo=this.state.roleList.find((item)=>{
+                                        return item.id===id
+                                    })
+                                    if(itemRlo){
+                                        this.setState({
+                                            checkedKeys:itemRlo.menus?itemRlo.menus.split(','):[]
+                                        })
+                                    }
+                                    this.setState({visibleAuth:true})
+                                }
+                            }
+                        >
+                            设置权限
+                        </Button>
                     )
                 }
             }
         ];
         const { getFieldDecorator } = this.props.form;
+
+        const treeData = menuList;
         return (
             <div>
                 <Card 
@@ -114,6 +185,7 @@ class Role extends Component {
                         rowKey="id"
                     />
                 </Card>
+                {/* 角色新增弹窗 */}
                 <Modal
                     title="新增角色"
                     visible={this.state.visible}
@@ -132,9 +204,37 @@ class Role extends Component {
                         )}
                     </Form>
                 </Modal>
+                {/* 树形弹窗 */}
+                <Modal
+                    title="授权"
+                    visible={this.state.visibleAuth}
+                    onOk={this.handleAuthOk}
+                    onCancel={this.handleAuthCancel}
+                    cancelText="取消"
+                    okText="确认"
+                >
+                    <Tree
+                        checkable//控制树的节点是否可以选择
+                        //onExpand={this.onExpand}//展开菜单的回调
+                        //expandedKeys={this.state.expandedKeys}//要展开哪个菜单
+                        //autoExpandParent={this.state.autoExpandParent}//自动打开父节点
+                        onCheck={this.onCheck}//选择某个菜单之后的回调
+                        checkedKeys={this.state.checkedKeys}//默认选择哪个
+                        //onSelect={this.onSelect}//
+                        //selectedKeys={this.state.selectedKeys}
+                        defaultExpandAll//默认打开所有的节点
+                    >
+                        <TreeNode title="平台功能" key="top">
+                            {this.renderTreeNodes(treeData)}
+                        </TreeNode>
+                    </Tree>
+                </Modal>
             </div>
         )
     }
 }
 const RoleForm = Form.create({})(Role);
-export default RoleForm;
+export default connect(
+    (state)=>({userInfo:state.userInfo}),
+    null
+)(RoleForm);
