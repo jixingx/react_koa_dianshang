@@ -314,6 +314,60 @@
             msg:'授权失败'
         }
 ```
+
+获取用户列表接口:/users/list
+```
+  请求分时:get
+  所需参数：
+  返回参数：
+    1. 成功返回：
+        ctx.body={
+            status:0,
+            data:{
+                roles:qureyRolesData,
+                users:resultUserDate
+            }
+        }
+    2. 失败返回：
+        ctx.body={
+            status:1,
+            msg:'获取列表失败'
+        }
+```
+
+获取用户列表接口:/users/add
+```
+  请求分时:get
+  所需参数：
+  返回参数：
+    1. 成功返回：
+        ctx.body={
+            status:0,
+            msg:"新增成功"
+        }
+    2. 失败返回：
+        ctx.body={
+            status:1,
+            msg:'新增失败'
+        }
+```
+
+查询角色接口:/roles/serach
+```
+  请求分时:get
+  所需参数：
+  返回参数：
+    1. 成功返回：
+        ctx.body={
+            status:0,
+            data:data
+        }
+    2. 失败返回：
+        ctx.body={
+            status:1,
+            msg:'菜单规划失败'
+        }
+```
 ## 后台
 ### 框架和技术
 1. react

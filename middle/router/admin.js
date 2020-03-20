@@ -527,5 +527,94 @@ router.post('/roles/update',async (ctx)=>{
         }
     }
 })
-
+//获取用户列表接口
+router.get("/users/list",async (ctx)=>{
+    try {
+        let sql=`SELECT * FROM roles`;
+        let qureyRolesData=await Dd(sql)
+        sql=`SELECT * FROM user`;
+        let qureyUsersData=await Dd(sql)
+        let resultUserDate=qureyUsersData.filter((item)=>{
+            return item.username!="admin"
+        })
+        if(qureyUsersData.length>0){
+            ctx.body={
+                status:0,
+                data:{
+                    roles:qureyRolesData,
+                    users:resultUserDate
+                }
+            }
+        }else{
+            ctx.body={
+                status:1,
+                msg:'获取列表失败'
+            }
+        }
+    } catch (error) {
+        ctx.body={
+            code:500,
+            msg:error
+        }
+    }
+})
+//添加用户接口
+router.post('/users/add',async (ctx)=>{
+    try {
+        let {username,password,phone,email,role_id}=ctx.request.body
+        password=md5(md5(password))
+        let sql=`INSERT INTO user VALUES(null,'${username}','${password}',now(),'${phone}','${email}',${role_id})`;
+        let addData=await Dd(sql)
+        if(addData.affectedRows>0){
+            ctx.body={
+                status:0,
+                msg:"新增成功"
+            }
+        }else{
+            ctx.body={
+                status:1,
+                msg:'新增失败'
+            }
+        }
+    } catch (error) {
+        ctx.body={
+            code:500,
+            msg:error
+        }
+    }
+})
+//查询角色接口
+router.post('/roles/serach',async (ctx)=>{
+    try {
+        let {role_id}=ctx.request.body
+        if(role_id){
+            let sql=`SELECT menus FROM roles WHERE id=${role_id}`;
+            let qureyRolesData=await Dd(sql)
+            //console.log(qureyRolesData[0].menus)
+            if(qureyRolesData[0].menus){
+                let data;
+                data=qureyRolesData[0].menus.indexOf(',')>-1?qureyRolesData[0].menus.split(','):qureyRolesData[0].menus.split(' ')
+                ctx.body={
+                    status:0,
+                    data:data
+                }
+            }else{
+                ctx.body={
+                    status:1,
+                    msg:'菜单规划失败'
+                } 
+            }
+        }else{
+            ctx.body={
+                status:0,
+                data:[]
+            }
+        }
+    } catch (error) {
+        ctx.body={
+            code:500,
+            msg:error
+        }
+    }
+})
 module.exports=router

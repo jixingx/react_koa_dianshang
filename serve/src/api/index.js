@@ -28,3 +28,8 @@ export const apiProductEdit=({id,imgs,name,desc_ribe,price,categoryId,detail})=>
 export const apiRolesList=()=> Myaxios.get('/roles/list')//获取角色列表
 export const apiRolesAdd=({name})=> Myaxios.post('/roles/add',{name})//添加角色
 export const apiRolesUpdate=(id,menus,auth_name)=> Myaxios.post('/roles/update',{id,menus,auth_name})//角色授权
+export const apiUsersList=()=> Myaxios.get('/users/list')//获取用户列表
+export const apiUsersAdd=({username,password,phone,email,role_id})=> Myaxios.post('/users/add',{username,password,phone,email,role_id})//添加用户
+export const apiRolesSerach=(role_id)=> Myaxios.post('/roles/serach',{role_id})//角色查询
+
+
