@@ -32,9 +32,9 @@ class LeftNav extends Component {
             return true
         }
         if(!menuObj.children){
-            return roles.find((item)=>item===menuObj.key)
+            return roles.find((item)=>{return item===menuObj.key})
         }else{
-            return menuObj.children.some((item2)=>roles.indexOf(item2.key)!==-1)
+            return menuObj.children.some((item2)=>{return roles.indexOf(item2.key)!==-1})
         }
     }
 

@@ -13,7 +13,6 @@
 7. jsonwebtoken(处理token)
 8. koa-jwt(主要提供路有权限控制的功能，它会对需要限制的资源请求进行检查)
 9. md5(对密码进行加密)
-10. koa-multer(上传文件)
 
 ### 接口
 > 所有接口前置`http://localhost:8080/admin`
@@ -383,6 +382,8 @@
 11. dayjs (时间插件)
 12. jsonp(jsonp请求插件)
 13. draft-js react-draft-wysiwyg draftjs-to-html (富文本插件)
+14. echarts echarts-for-react(图表插件)
+15. react-i18next i18next i18next-xhr-backend i18next-browser-languagedetector(语言插件)
 
 
 
