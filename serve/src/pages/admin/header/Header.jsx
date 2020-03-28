@@ -6,7 +6,7 @@ import {Button,Icon,Modal} from 'antd'
 import screenfull from 'screenfull';
 import {connect} from 'react-redux';
 import {loginout} from '../../../redux/actions/login_creators'
-import {save_title} from '../../../redux/actions/title_creators.js'
+import {save_title,delete_title} from '../../../redux/actions/title_creators.js'
 import dayjs from 'dayjs'
 import {apiWeather} from "../../../api/index"
 
@@ -54,6 +54,7 @@ class Header extends Component {
             okText:"确定",
             onOk:()=> {
                 this.props.loginout()
+                this.props.delete_title()
             },
             onCancel() {
                 
@@ -116,5 +117,5 @@ class Header extends Component {
 
 export default connect(
     (state)=>({userInfo:state.userInfo,title:state.title}),
-    {loginout,save_title}
+    {loginout,save_title,delete_title}
 )(withRouter(Header))

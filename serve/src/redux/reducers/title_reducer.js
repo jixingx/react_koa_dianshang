@@ -1,4 +1,4 @@
-import {SAVE_TITLE} from '../action_types'
+import {SAVE_TITLE,DELETE_TITLE} from '../action_types'
 
 let defaultState=''
 
@@ -10,6 +10,9 @@ export default (state=defaultState,action)=>{
         case SAVE_TITLE:
             newState=data
             return newState
+        case DELETE_TITLE:
+            newState="";
+            return newState;
         default:
             return state;
     }
